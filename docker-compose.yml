@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  # backend api
+  brainiac-api:
+    container_name: backend
+    build: ./
+    command: npm start
+    working_dir: /usr/src/brainiac-api
+    environment:
+      POSTGRES_URI: postgres://sally:secret@postgres:5432/brainiac-docker
+    links:
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./:/usr/src/brainiac-api"
+
+  # postgres
+  postgres:
+    environment:
+      POSTGRES_USER: sally
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: brainiac-docker
+      POSTGRES_HOST: postgres
+    build: ./postgres
+    ports:
+      - "5432:5432"
